@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GTA 6 Countdown</title>
+
+  <!-- Game-style font -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://upload.wikimedia.org/wikipedia/en/8/88/GTA_VI_Box_Art.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .countdown {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px #f0f;
+    }
+
+    .countdown h1 {
+      font-size: 3em;
+      color: #f0f;
+      text-shadow: 0 0 10px #f0f, 0 0 20px #f0f;
+      margin-bottom: 30px;
+    }
+
+    .timer {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .label {
+      font-size: 1em;
+      color: #fff;
+      margin-bottom: 10px;
+      text-shadow: 0 0 5px #0ff;
+    }
+
+    .value {
+      background: rgba(0, 255, 255, 0.15);
+      border: 2px solid #0ff;
+      width: 80px;
+      height: 80px;
+      font-size: 1.75em;
+      color: #0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #0ff;
+      position: relative;
+      transform-style: preserve-3d;
+      perspective: 500px;
+    }
+
+    .flip {
+      animation: flip 0.6s ease-in-out;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="countdown">
+    <h1>GTA VI Countdown</h1>
+    <div class="timer">
+      <div class="unit">
+        <div class="label">DAYS</div>
+        <div class="value" id="days">0</div>
+      </div>
+      <div class="unit">
+        <div class="label">HOURS</div>
+        <div class="value" id="hours">0</div>
+      </div>
+      <div class="unit">
+        <div class="label">MINUTES</div>
+        <div class="value" id="minutes">0</div>
+      </div>
+      <div class="unit">
+        <div class="label">SECONDS</div>
+        <div class="value" id="seconds">0</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const targetDate = new Date();
+    targetDate.setFullYear(targetDate.getFullYear() + 1);
+
+    const units = ['days', 'hours', 'minutes', 'seconds'];
+
+    function updateCountdown() {
+      const now = new Date();
+      const timeLeft = targetDate - now;
+
+      const values = {
+        days: Math.floor(timeLeft / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((timeLeft / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((timeLeft / 1000 / 60) % 60),
+        seconds: Math.floor((timeLeft / 1000) % 60),
+      };
+
+      for (const unit of units) {
+        const el = document.getElementById(unit);
+        if (el.innerText !== String(values[unit])) {
+          el.classList.remove('flip');
+          void el.offsetWidth; // reflow for restarting animation
+          el.innerText = values[unit];
+          el.classList.add('flip');
+        }
+      }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
